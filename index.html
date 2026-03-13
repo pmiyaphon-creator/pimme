@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>โรงอาหารคณะรัฐศาสตร์ มหาวิทยาลัยเชียงใหม่ | Political Science Cafeteria - CMU</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-area" onclick="app.navigate('home')">
+                <i class="fa-solid fa-utensils brand-icon"></i>
+                <div class="brand-text">
+                    <span class="brand-th">โรงอาหารคณะรัฐศาสตร์</span>
+                    <span class="brand-en">Political Science Cafeteria</span>
+                </div>
+            </div>
+            <div class="nav-links" style="display:flex; align-items:center; gap:20px;">
+                <div id="user-nav-display"
+                    style="display:none; align-items:center; gap:8px; color:var(--text-light); font-size:0.9rem;">
+                    <i class="fa-regular fa-circle-user" style="font-size:1.2rem; color:var(--accent);"></i>
+                    <span id="nav-user-name"></span>
+                </div>
+                <button id="nav-login-btn" class="btn btn-primary btn-sm"
+                    style="background-color:var(--accent); color:var(--primary); font-weight:600; padding:6px 15px;"
+                    onclick="app.navigate('login')">
+                    <span class="btn-th">เข้าสู่ระบบ</span>
+                    <span class="btn-en">Login</span>
+                </button>
+                <button class="cart-btn" onclick="app.navigate('cart')">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="cart-count">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    <main id="app-content">
+        <section id="home" class="page-section active">
+            <div class="hero">
+                <div class="hero-content">
+                    <div class="hero-text-block">
+                        <h1 class="hero-title-th">โรงอาหารคณะรัฐศาสตร์<br>มหาวิทยาลัยเชียงใหม่</h1>
+                        <p class="hero-title-en">Political Science Cafeteria - Chiang Mai University</p>
+                    </div>
+                    <div class="sustainability-card">
+                        <div class="sus-icon">
+                            <i class="fa-solid fa-seedling"></i>
+                        </div>
+                        <div class="sus-text">
+                            <h3 class="sus-th">ร่วมกันลดขยะอาหาร เพื่อโลกของเรา</h3>
+                            <p class="sus-en">Help reduce food waste. Order only what you need for a better planet.</p>
+                        </div>
+                    </div>
+                    <div class="hero-actions">
+                        <button class="btn btn-primary btn-lg" onclick="app.navigate('stalls')">
+                            <span class="btn-th">ดูร้านอาหาร</span>
+                            <span class="btn-en">View Food Stalls</span>
+                        </button>
+                        <button class="btn btn-gradient btn-lg" onclick="app.navigate('food-pass')"
+                            style="color:var(--primary);">
+                            <span class="btn-th"><i class="fa-solid fa-crown"></i> Faculty Food Pass</span>
+                            <span class="btn-en">Unlock Rewards</span>
+                        </button>
+                        <button class="btn btn-outline btn-lg" onclick="app.navigate('dashboard')">
+                            <span class="btn-th">ดูข้อมูลขยะอาหาร</span>
+                            <span class="btn-en">View Food Waste Data</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section id="stalls" class="page-section">
+            <div class="section-header">
+                <h2 class="title-th">ร้านอาหารทั้งหมด</h2>
+                <p class="subtitle-en">All Food Stalls</p>
+            </div>
+            <div class="grid-container" id="stalls-grid"></div>
+        </section>
+        <section id="menu" class="page-section">
+            <button class="back-btn" onclick="app.navigate('stalls')">
+                <i class="fa-solid fa-arrow-left"></i>
+                <div class="back-btn-text">
+                    <span class="back-btn-th">กลับไปเลือกร้าน</span>
+                    <span class="back-btn-en">Back to Stalls</span>
+                </div>
+            </button>
+            <div class="section-header" id="menu-header"></div>
+            <div class="menu-grid" id="menu-grid"></div>
+        </section>
+        <section id="item-detail" class="page-section">
+            <button class="back-btn" onclick="app.navigate('menu')">
+                <i class="fa-solid fa-arrow-left"></i>
+                <div class="back-btn-text">
+                    <span class="back-btn-th">กลับไปเมนู</span>
+                    <span class="back-btn-en">Back to Menu</span>
+                </div>
+            </button>
+            <div class="menu-container" id="item-details"></div>
+        </section>
+        <section id="cart" class="page-section">
+            <div class="section-header">
+                <h2 class="title-th">ตะกร้าสินค้า</h2>
+                <p class="subtitle-en">Your Cart</p>
+            </div>
+            <div class="cart-layout">
+                <div class="cart-items" id="cart-items-list"></div>
+                <div class="cart-summary">
+                    <h3 class="summary-title-th">สรุปคำสั่งซื้อ</h3>
+                    <p class="summary-title-en">Order Summary</p>
+                    <div class="summary-details">
+                        <div class="summary-row">
+                            <span class="row-th">ยอดรวม (Subtotal)</span>
+                            <span class="row-val" id="cart-subtotal">฿0.00</span>
+                        </div>
+                        <hr class="summary-divider">
+                        <div class="summary-row total-row">
+                            <span class="row-th">ยอดสุทธิ (Total)</span>
+                            <span class="row-val highlight-val" id="cart-total">฿0.00</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary btn-block checkout-btn" onclick="app.navigate('checkout')"
+                        id="proceed-checkout-btn" disabled>
+                        <span class="btn-th">ดำเนินการชำระเงิน</span>
+                        <span class="btn-en">Proceed to Checkout</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+        <section id="checkout" class="page-section">
+            <button class="back-btn" onclick="app.navigate('cart')">
+                <i class="fa-solid fa-arrow-left"></i>
+                <div class="back-btn-text">
+                    <span class="back-btn-th">กลับไปตะกร้าสินค้า</span>
+                    <span class="back-btn-en">Back to Cart</span>
+                </div>
+            </button>
+            <div class="checkout-layout">
+                <div class="checkout-form-card">
+                    <h2 class="title-th">ข้อมูลผู้สั่งซื้อ</h2>
+                    <p class="subtitle-en">Order Information</p>
+                    <form id="checkout-form" onsubmit="app.submitOrder(event)">
+                        <div class="form-group">
+                            <label for="student-name">
+                                <span class="label-th">ชื่อ-นามสกุล</span>
+                                <span class="label-en">Full Name</span>
+                            </label>
+                            <input type="text" id="student-name" required placeholder="Enter your full name">
+                        </div>
+                        <div class="form-group">
+                            <label for="student-phone">
+                                <span class="label-th">เบอร์ติดต่อ</span>
+                                <span class="label-en">Phone Number</span>
+                            </label>
+                            <input type="tel" id="student-phone" required placeholder="08xxxxxxxx">
+                        </div>
+                        <div class="form-group">
+                            <label for="student-id">
+                                <span class="label-th">รหัสนักศึกษา (ถ้ามี)</span>
+                                <span class="label-en">Student ID (Optional)</span>
+                            </label>
+                            <input type="text" id="student-id" placeholder="Ex: 6xxxxxx (Optional)">
+                        </div>
+                        <hr class="form-divider">
+                        <div class="form-group pickup-date-group">
+                            <label for="pickup-date">
+                                <span class="label-th">วันที่รับอาหาร</span>
+                                <span class="label-en">Pickup Date (Today)</span>
+                            </label>
+                            <input type="text" id="pickup-date" readonly class="readonly-input">
+                        </div>
+                        <div class="form-group">
+                            <label for="pickup-time">
+                                <span class="label-th">เวลาที่ต้องการรับ</span>
+                                <span class="label-en">Pickup Time</span>
+                            </label>
+                            <input type="time" id="pickup-time" required onchange="app.updatePickupTimeDisplay()">
+                        </div>
+                        <div class="time-confirmation-box" id="time-confirmation-box" style="display: none;">
+                            <i class="fa-regular fa-clock"></i>
+                            <div class="time-conf-text">
+                                <span class="conf-th">คุณจะรับอาหารเวลา: <strong
+                                        id="display-pickup-time"></strong></span>
+                                <span class="conf-en">You will pick up your food at this time.</span>
+                            </div>
+                        </div>
+                        <div class="queue-preview-box">
+                            <h3><i class="fa-solid fa-ticket"></i> คิวของคุณคือ (Your Queue)</h3>
+                            <div class="queue-preview-number" id="display-q-number">Q000</div>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block submit-order-btn">
+                            <span class="btn-th">ยืนยันคำสั่งซื้อ</span>
+                            <span class="btn-en">Confirm Order</span>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </section>
+        <!-- QR Payment Section -->
+        <section id="payment" class="page-section">
+            <button class="back-btn" onclick="app.navigate('checkout')">
+                <i class="fa-solid fa-arrow-left"></i>
+                <div class="back-btn-text">
+                    <span class="back-btn-th">กลับหน้าชำระเงิน</span>
+                    <span class="back-btn-en">Back to Checkout</span>
+                </div>
+            </button>
+            <div class="section-header">
+                <h2 class="title-th">ชำระเงินด้วย QR Code</h2>
+                <p class="subtitle-en">QR Payment</p>
+            </div>
+            <div class="payment-card"
+                style="max-width: 400px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); text-align: center;">
+                <div style="font-size: 1.2rem; margin-bottom: 20px;">
+                    <span style="color: var(--text-muted);">ยอดชำระทั้งหมด (Total Amount)</span><br>
+                    <strong style="font-size: 2rem; color: var(--accent);" id="payment-total-amount">฿0.00</strong>
+                </div>
+                <div class="qr-code-placeholder"
+                    style="background: #f8fafc; padding: 20px; border-radius: 8px; margin-bottom: 20px; border: 2px dashed #cbd5e1;">
+                    <i class="fa-solid fa-qrcode" style="font-size: 8rem; color: var(--primary);"></i>
+                    <p style="margin-top: 15px; font-weight: 600; color: var(--text-dark);">กรุณาสแกนเพื่อชำระเงิน</p>
+                    <p style="font-size: 0.85rem; color: var(--text-muted);">(Please scan to pay)</p>
+                </div>
+                <p style="font-size: 0.8rem; color: #f59e0b; margin-bottom: 25px;"><i
+                        class="fa-solid fa-triangle-exclamation"></i> ระบบจำลองการชำระเงินเพื่อการสาธิต (Payment
+                    Simulation for Demo Context)</p>
+                <button class="btn btn-primary btn-block" style="padding: 15px; font-size: 1.1rem; border-radius: 8px;"
+                    onclick="app.confirmPayment()">
+                    <span class="btn-th">ยืนยันการชำระเงิน</span>
+                    <span class="btn-en" style="display:block; font-size:0.85rem; font-weight:normal;">Confirm
+                        Payment</span>
+                </button>
+            </div>
+        </section>
+        <!-- Order Status Section -->
+        <section id="order-status" class="page-section">
+            <div class="section-header">
+                <h2 class="title-th">สถานะคำสั่งซื้อ</h2>
+                <p class="subtitle-en">Order Status</p>
+            </div>
+            <div class="order-timeline-card">
+                <h2 class="modal-title-th" style="color:var(--success); margin-bottom: 30px;"><i
+                        class="fa-solid fa-check-circle"></i> สั่งซื้อสำเร็จ!</h2>
+                <p class="modal-title-en"
+                    style="color:var(--text-muted); margin-bottom: 30px; margin-top:-20px; display:block;">Order
+                    Successful!</p>
+                <div id="confirmed-q-number"
+                    style="font-size: 2rem; color: var(--accent); font-weight: bold; text-align: center; margin-bottom: 30px;">
+                </div>
+                <div class="timeline" id="status-timeline">
+                    <!-- Step 1 -->
+                    <div class="status-step active" id="step-1">
+                        <div class="step-icon"><i class="fa-solid fa-fire-burner"></i></div>
+                        <span class="step-label-th">กำลังเตรียมอาหาร</span>
+                        <span class="step-label-en">Preparing</span>
+                    </div>
+                    <!-- Step 2 -->
+                    <div class="status-step" id="step-2">
+                        <div class="step-icon"><i class="fa-solid fa-bell-concierge"></i></div>
+                        <span class="step-label-th">พร้อมรับแล้ว</span>
+                        <span class="step-label-en">Ready</span>
+                    </div>
+                    <!-- Step 3 -->
+                    <div class="status-step" id="step-3">
+                        <div class="step-icon"><i class="fa-solid fa-bag-shopping"></i></div>
+                        <span class="step-label-th">รับอาหารแล้ว</span>
+                        <span class="step-label-en">Picked Up</span>
+                    </div>
+                </div>
+                <button class="btn btn-primary btn-block" onclick="app.closeModalAndGoHome()" style="margin-top: 40px;">
+                    <span class="btn-th">กลับสู่หน้าหลัก</span>
+                    <span class="btn-en">Return to Home</span>
+                </button>
+            </div>
+        </section>
+        <!-- Faculty Food Pass Section -->
+        <section id="food-pass" class="page-section">
+            <button class="back-btn" onclick="app.navigate('home')">
+                <i class="fa-solid fa-arrow-left"></i>
+                <div class="back-btn-text">
+                    <span class="back-btn-th">กลับหน้าหลัก</span>
+                    <span class="back-btn-en">Back to Home</span>
+                </div>
+            </button>
+            <div class="section-header">
+                <h2 class="title-th" style="color:var(--accent);"><i class="fa-solid fa-crown"></i> Faculty Food Pass
+                </h2>
+                <p class="subtitle-en">Explore all stalls to unlock special privileges!</p>
+            </div>
+            <div class="food-pass-container">
+                <!-- Dynamic Success Message Alert -->
+                <div id="food-pass-success-alert">
+                    <div class="fps-icon"><i class="fa-solid fa-circle-check"></i></div>
+                    <div class="fps-text">
+                        <span class="fps-th" id="fps-th-msg"></span>
+                        <span class="fps-en" id="fps-en-msg"></span>
+                    </div>
+                </div>
+                <div style="text-align:center; margin-bottom: 20px;">
+                    <p style="font-size: 1.1rem; color: var(--text-dark);">กินครบทุกร้าน รับไปเลยรางวัลพิเศษ!</p>
+                    <p style="color: var(--text-muted); font-size: 0.9rem;">(Eat 3 times at every stall to unlock
+                        rewards)</p>
+                </div>
+                <div class="stamp-grid" id="pass-grid">
+                    <!-- Stalls generated here -->
+                </div>
+                <div class="unlock-message-box" id="unlock-message">
+                    <div class="unlock-icon"><i class="fa-solid fa-gift"></i></div>
+                    <h2>Faculty Food Pass Unlocked!</h2>
+                    <p class="en-subtitle" style="color: #f8fafc; opacity:0.8; margin-bottom: 20px;">Congratulations!
+                        You've tried them all</p>
+                    <button class="btn btn-primary btn-block" style="background-color: white; color: var(--primary);"
+                        onclick="app.redeemReward()">
+                        <span class="btn-th" style="font-weight: 700;">รับรางวัล</span>
+                        <span class="btn-en">Redeem Reward</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+        <section id="dashboard" class="page-section">
+            <button class="back-btn" onclick="app.navigate('home')">
+                <i class="fa-solid fa-arrow-left"></i>
+                <div class="back-btn-text">
+                    <span class="back-btn-th">กลับหน้าหลัก</span>
+                    <span class="back-btn-en">Back to Home</span>
+                </div>
+            </button>
+            <div class="section-header">
+                <h2 class="title-th">สถิติขยะอาหารประจำวัน</h2>
+                <p class="subtitle-en">Daily Food Waste Dashboard</p>
+            </div>
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon"><i class="fa-solid fa-bowl-rice"></i></div>
+                    <div class="stat-info">
+                        <h3 class="th">ปริมาณขยะข้าววันนี้</h3>
+                        <p class="en">Today's Rice Waste</p>
+                        <div class="stat-value">12.5 <span class="unit">kg</span></div>
+                    </div>
+                </div>
+                <div class="stat-card target-card">
+                    <div class="stat-icon"><i class="fa-solid fa-trash-can"></i></div>
+                    <div class="stat-info">
+                        <h3 class="th">ปริมาณขยะอาหารรวม</h3>
+                        <p class="en">Total Food Waste</p>
+                        <div class="stat-value">34.2 <span class="unit">kg</span></div>
+                    </div>
+                </div>
+                <div class="stat-card info-card"
+                    style="background-color: rgba(16, 185, 129, 0.05); border: 1px solid rgba(16, 185, 129, 0.2);">
+                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.2); color: #10b981;"><i
+                            class="fa-solid fa-arrow-trend-down"></i></div>
+                    <div class="stat-info">
+                        <h3 class="th">ลดลงจากสัปดาห์ที่แล้ว</h3>
+                        <p class="en">% Reduction from last week</p>
+                        <div class="stat-value" style="color: #10b981;">18.5 <span class="unit">%</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="dashboard-chart-placeholder">
+                <div class="chart-illustration">
+                    <div class="bar-wrap">
+                        <div class="bar" style="height: 60%"></div><span>Mon</span>
+                    </div>
+                    <div class="bar-wrap">
+                        <div class="bar" style="height: 40%"></div><span>Tue</span>
+                    </div>
+                    <div class="bar-wrap">
+                        <div class="bar" style="height: 55%"></div><span>Wed</span>
+                    </div>
+                    <div class="bar-wrap">
+                        <div class="bar" style="height: 30%"></div><span>Thu</span>
+                    </div>
+                    <div class="bar-wrap">
+                        <div class="bar highlight" style="height: 20%"></div><span>Today</span>
+                    </div>
+                </div>
+                <p class="chart-caption" style="display:flex; flex-direction:column; align-items:center;">
+                    <span class="th">ปริมาณขยะอาหารย้อนหลัง 5 วัน</span>
+                    <span class="en">Last 5 days food waste</span>
+                </p>
+            </div>
+        </section>
+    </main>
+    <!-- Login Section -->
+    <section id="login" class="page-section">
+        <div class="modal-content"
+            style="max-width:400px; margin:auto; margin-top:20vh; background:white; padding:30px; border-radius:var(--border-radius); box-shadow:var(--card-shadow);">
+            <div class="modal-header"
+                style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:20px;">
+                <div>
+                    <h2 class="title-th" style="font-size:1.3rem;">เข้าสู่ระบบ</h2>
+                    <p class="subtitle-en" style="font-size:0.8rem; color:var(--text-muted);"><i
+                            class="fa-solid fa-info-circle" style="color:var(--primary);"></i> Login / Member System</p>
+                </div>
+                <button class="close-modal-btn" type="button" onclick="app.navigate('home')"
+                    style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text-muted);"><i
+                        class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="login-form" onsubmit="app.handleLogin(event)">
+                <div class="form-group" style="margin-bottom:15px;">
+                    <label for="login-name" style="display:block; margin-bottom:5px;">
+                        <span class="label-th">ชื่อ-นามสกุล *</span>
+                        <span class="label-en">Full Name</span>
+                    </label>
+                    <input type="text" id="login-name" placeholder="Enter your full name"
+                        style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-family:'Prompt', sans-serif;">
+                </div>
+                <div class="form-group" style="margin-bottom:25px;">
+                    <label for="login-phone" style="display:block; margin-bottom:5px;">
+                        <span class="label-th">เบอร์โทรศัพท์ หรือ อีเมล *</span>
+                        <span class="label-en">Phone number OR Email</span>
+                    </label>
+                    <input type="text" id="login-phone" placeholder="Phone OR Email"
+                        style="width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:8px; font-family:'Prompt', sans-serif;">
+                </div>
+                <p id="login-error" style="color: red; font-size: 0.85rem; margin-bottom: 15px; display: none;">
+                    กรุณากรอกข้อมูลให้ครบถ้วน (Please fill in all required fields)</p>
+                <button type="submit" class="btn btn-primary btn-block"
+                    style="width:100%; padding:12px; border-radius:8px; border:none; background-color:var(--secondary); color:white; font-family:'Prompt', sans-serif; cursor:pointer;">
+                    <span class="btn-th" style="font-weight: 700;">เข้าสู่ระบบ</span>
+                    <span class="btn-en">Login</span>
+                </button>
+            </form>
+        </div>
+    </section>
+    <div id="toast" class="toast hidden">
+        <i class="fa-solid fa-circle-check"></i>
+        <div style="display:flex; flex-direction:column; gap:2px;">
+            <span id="toast-message-th"
+                style="font-weight:600; font-family:'Prompt', sans-serif;">เพิ่มลงตะกร้าแล้ว!</span>
+            <span id="toast-message-en" style="font-size:0.8rem; color:#64748b; font-family:'Inter', sans-serif;">Added
+                to cart</span>
+        </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
